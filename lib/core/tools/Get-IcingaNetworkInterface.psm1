@@ -47,7 +47,7 @@ function Get-IcingaNetworkInterface()
 
     [hashtable]$InterfaceData=@{};
 
-    $InterfaceInfo = Get-NetRoute;
+    $InterfaceInfo = Get-IcingaNetworkRoutes;
     $Counter = 0;
 
     foreach ( $Info in $InterfaceInfo ) {
@@ -144,7 +144,7 @@ function Get-IcingaNetworkInterface()
 
     if ($ExternalInterfaces.Count -eq 0) {
         foreach ($destinationIP in $IPBinStringMaster) {
-            $ExternalInterface = ((Get-NetIPAddress -InterfaceIndex (Get-NetRoute | Where-Object -Property DestinationPrefix -like '0.0.0.0/0')[0].IfIndex -AddressFamily $destinationIP.name).IPAddress).split('%')[0];
+            $ExternalInterface = ((Get-NetIPAddress -InterfaceIndex (Get-IcingaNetworkRoutes | Where-Object -Property DestinationPrefix -like '0.0.0.0/0')[0].IfIndex -AddressFamily $destinationIP.name).IPAddress).split('%')[0];
             if ($ExternalInterfaces.ContainsKey($ExternalInterface)) {
                 $ExternalInterfaces[$ExternalInterface].count += 1;
             } else {
